@@ -1,0 +1,1 @@
+# Pametna_analiza_smucarskihSkokov
