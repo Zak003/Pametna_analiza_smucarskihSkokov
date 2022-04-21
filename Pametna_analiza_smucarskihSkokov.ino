@@ -28,6 +28,9 @@ File dataFile;
 const int LIMIT = 1000;
 char fileName[13];
 
+//spremenljivka za stevec lajnov
+int line_counter = 0;
+
 void setup() {
     pinMode(16, INPUT);
     pinMode(LED_BUILTIN, OUTPUT);
@@ -63,7 +66,7 @@ void setup() {
 
       //za pregled in ustvarjanje txt fajlov 
       for (int n = 0; n < LIMIT; n++) {
-        sprintf(fileName, "test%.3d.txt", n);
+        sprintf(fileName, "file%.3d.txt", n);
         if (SD.exists(fileName)) continue;
         dataFile = SD.open(fileName, FILE_WRITE);
         break; 
@@ -84,25 +87,29 @@ void setup() {
       dataFile = SD.open(fileName, FILE_WRITE);
 
       if(button){
-        Serial.print("ax:"); Serial.print(ax); Serial.print("\t");
-        Serial.print("ay:");Serial.print(ay); Serial.print("\t");
-        Serial.print("az:");Serial.print(az); Serial.print("\t");
-        Serial.print("gx:");Serial.print(gx); Serial.print("\t");
-        Serial.print("gy:");Serial.print(gy); Serial.print("\t");
-        Serial.print("gz:");Serial.println(gz);
-         
+        Serial.print(line_counter);Serial.print(";");
+        Serial.print("ax:"); Serial.print(ax); Serial.print(";");
+        Serial.print("ay:");Serial.print(ay); Serial.print(";");
+        Serial.print("az:");Serial.print(az); Serial.print(";");
+        Serial.print("gx:");Serial.print(gx); Serial.print(";");
+        Serial.print("gy:");Serial.print(gy); Serial.print(";");
+        Serial.print("gz:");Serial.print(gz); Serial.println(";");
+        
+        //zapis podatkov na sd card 
         if (dataFile) {
-          dataFile.print("ax:");dataFile.print(ax);dataFile.print(";");
-          dataFile.print("ay:");dataFile.print(ay);dataFile.print(";");
-          dataFile.print("az:");dataFile.print(az);dataFile.print(";");
-          dataFile.print("gx:");dataFile.print(gx);dataFile.print(";");
-          dataFile.print("gy:");dataFile.print(gy);dataFile.print(";");dataFile.println("");
+          dataFile.print(line_counter);dataFile.print(";");
+          dataFile.print(ax);dataFile.print(";");
+          dataFile.print(ay);dataFile.print(";");
+          dataFile.print(az);dataFile.print(";");
+          dataFile.print(gx);dataFile.print(";");
+          dataFile.print(gy);dataFile.print(";");dataFile.println("");
           dataFile.close();
-          Serial.println("Writing to SD card was DONE!");
+          //Serial.println("Writing to SD card was DONE!");
          }
          else {
-          Serial.println("error opening test.txt");
+          Serial.println("error opening file.txt");
          }
+         line_counter++;
       }
 
       #endif
